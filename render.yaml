@@ -1,0 +1,29 @@
+# Render blueprint for the Duplex broker (the Python server).
+# https://render.com/docs/blueprint-spec
+#
+# Deploy: push this repo to GitHub, then in Render pick "New > Blueprint" and point it here.
+# Render reads OPENAI_API_KEY from the dashboard (sync: false), not from .env.local.
+#
+# After the frontend is deployed, set DUPLEX_ALLOWED_ORIGINS to the frontend's real URL so the
+# browser can call this broker across origins.
+
+services:
+  - type: web
+    name: duplex-broker
+    runtime: python
+    plan: free
+    buildCommand: pip install uv && uv sync --frozen
+    startCommand: uv run uvicorn duplex_server.broker:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      # Set this in the Render dashboard; it is never committed.
+      - key: OPENAI_API_KEY
+        sync: false
+      # The deployed frontend's origin (CORS allowlist). Change to your frontend URL.
+      - key: DUPLEX_ALLOWED_ORIGINS
+        value: https://duplex-frontend.onrender.com
+      # Optional overrides — uncomment to pin them:
+      # - key: DUPLEX_MODEL
+      #   value: gpt-live-1
+      # - key: DUPLEX_BRAIN_MODEL
+      #   value: gpt-6-luna
