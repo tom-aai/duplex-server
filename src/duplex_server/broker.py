@@ -8,7 +8,7 @@ and exchanges the browser's WebRTC SDP *offer* for an *answer* via the Live endp
 that exchange, audio flows **browser <-> model directly** over WebRTC. This server
 never relays media.
 
-Swap seam: the model id is read from ``DUPLEX_MODEL`` (default ``gpt-live-1``). When our
+Swap seam: the model id is read from ``DUPLEX_MODEL`` (default ``gpt-live-1.1``). When our
 own model is ready, point that at it and the SDK shape should not change.
 
 Run (from the repo root):
@@ -41,7 +41,11 @@ from .worker import SessionWorker
 REPO_ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(REPO_ROOT / ".env.local")
 
-MODEL = os.getenv("DUPLEX_MODEL", "gpt-live-1")  # <- the clean-swap seam
+MODEL = os.getenv("DUPLEX_MODEL", "gpt-live-1.1")  # <- the clean-swap seam
+# Standby: after this many seconds without transcripts, the session pauses inference (billed
+# at the lower standby rate) and wakes when the user speaks. OpenAI accepts a whole number
+# from 5 to 60. Set DUPLEX_IDLE_TIMEOUT_S=0 to turn standby off.
+IDLE_TIMEOUT_S = int(os.getenv("DUPLEX_IDLE_TIMEOUT_S", "20"))
 # The prompts live in prompts.md. DUPLEX_INSTRUCTIONS overrides the default one.
 DEFAULT_INSTRUCTIONS = os.getenv("DUPLEX_INSTRUCTIONS") or load_prompt("default_instructions")
 # Added when delegation is on. Without it the model answers the time question itself.
@@ -147,6 +151,9 @@ async def create_session(req: SessionRequest) -> SessionResponse:
         instructions += DELEGATION_INSTRUCTIONS
         config["delegation"] = {"type": "client"}
     config["instructions"] = instructions
+    if IDLE_TIMEOUT_S:
+        config["wake_policy"] = {"type": "speech"}
+        config["idle_timeout_s"] = IDLE_TIMEOUT_S
     try:
         result = await client().live.create(
             session=config,  # type: ignore[arg-type]

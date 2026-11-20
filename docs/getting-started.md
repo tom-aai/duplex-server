@@ -27,7 +27,7 @@ OPENAI_API_KEY=sk-...
 Optional overrides (defaults shown) — see the [config table](./connection-core.md#configuration):
 
 ```
-# DUPLEX_MODEL=gpt-live-1
+# DUPLEX_MODEL=gpt-live-1.1
 # DUPLEX_ALLOWED_ORIGINS=http://localhost:3000
 ```
 
@@ -39,7 +39,7 @@ From this repo's root:
 uv run uvicorn duplex_server.broker:app --reload --port 8000
 ```
 
-Check it: `curl http://localhost:8000/health` → `{"status":"ok","model":"gpt-live-1"}`.
+Check it: `curl http://localhost:8000/health` → `{"status":"ok","model":"gpt-live-1.1"}`.
 
 ## 3. Start the frontend (terminal 2)
 

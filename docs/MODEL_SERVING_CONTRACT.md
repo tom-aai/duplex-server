@@ -1,7 +1,7 @@
 # Model Serving Contract
 
-We build the starter app against OpenAI GPT-Live-1 for now. GPT-Live-1 stands in for our own
-full-duplex model, so the starter leans on GPT-Live-1 behavior. This doc writes down the
+We build the starter app against OpenAI GPT-Live-1.1 for now. GPT-Live-1.1 stands in for our own
+full-duplex model, so the starter leans on GPT-Live-1.1 behavior. This doc writes down the
 behaviors the app relies on. They are two things at once: what our own serving endpoint must
 expose, and what our future SDK must handle on top of it. Any place our model behaves
 differently is a place the serving endpoint and the SDK will have to absorb the difference.
@@ -9,7 +9,7 @@ differently is a place the serving endpoint and the SDK will have to absorb the 
 This is the main thing the starter produces. Each piece we build by hand adds a line here, so
 the contract grows into the first real spec for both the model's endpoint and the SDK around it.
 
-**Reference shape:** OpenAI GPT-Live-1. The model id is `gpt-live-1`. The endpoint base is
+**Reference shape:** OpenAI GPT-Live-1.1. The model id is `gpt-live-1.1`. The endpoint base is
 `/v1/live`. 
 
 ## The shape we assume
@@ -45,7 +45,7 @@ steers the call over a separate control channel. The server never carries the au
 - Both directions run at the same time. The model listens and speaks at the same time.
 - The server never carries the audio.
 - Our serving stack must terminate WebRTC and run the duplex model behind the endpoint.
-- This media plane is the model team's work. We mock it with GPT-Live-1 for now.
+- This media plane is the model team's work. We mock it with GPT-Live-1.1 for now.
 
 ### 3. The event and data channel
 

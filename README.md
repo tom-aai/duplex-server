@@ -24,7 +24,7 @@ We build each piece one at a time, on purpose, so every part stays readable.
   └──────┬───────┘                                   │ duplex voice │
          │                                           │    model.    │
          │ start                                     │  served by   │
-         │ the call                                  │  GPT-Live-1  │
+         │ the call                                  │ GPT-Live-1.1 │
          ▼                                           │   for now    │
   ┌────────────────────────────┐                     │              │
   │           SERVER           │ ◀══ control ══════▶ │              │
@@ -46,7 +46,7 @@ straight to the model.
 
 **The model.** This is the duplex voice model. It listens and it speaks. It does nothing
 else. When it needs real work done, it hands that work off. Right now we use OpenAI
-GPT-Live-1 as a stand-in for our own model. The model runs on the provider's servers, not
+GPT-Live-1.1 as a stand-in for our own model. The model runs on the provider's servers, not
 on ours.
 
 **The server.** This is our own Python app. It does three jobs:
@@ -98,7 +98,7 @@ uv sync                                          # first time only, installs dep
 uv run uvicorn duplex_server.broker:app --reload --port 8000
 ```
 
-Check it: `curl http://localhost:8000/health` returns `{"status":"ok","model":"gpt-live-1"}`.
+Check it: `curl http://localhost:8000/health` returns `{"status":"ok","model":"gpt-live-1.1"}`.
 
 **Terminal 2 — the web app**, in the `duplex-frontend` repo:
 

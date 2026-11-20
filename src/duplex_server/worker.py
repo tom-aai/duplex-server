@@ -275,6 +275,10 @@ class SessionWorker:
             if self.delegate and event.delegation.target == "client":
                 # Do not block the event loop: keep reading events while the brain runs.
                 asyncio.create_task(self._delegate(conn, event.delegation.id))
+        elif kind in ("session.paused", "session.resumed"):
+            # Standby: paused = idle timeout hit, resumed = inference is ready again.
+            self._flush()
+            log.info("[%s] %s", self.session_id[-6:], kind)
         elif kind == "error":
             self._flush()
             log.error("[%s] error event: %s", self.session_id[-6:], event)

@@ -40,7 +40,7 @@ to "a live, two-way audio connection with the model is open." We call it **Piece
 ```
 
 No ephemeral token step: the browser never receives the API key, and the key never leaves the
-broker. This mirrors GPT-Live-1's documented browser flow.
+broker. This mirrors GPT-Live-1.1's documented browser flow.
 
 ### Browser client — `connect()`
 
@@ -127,9 +127,9 @@ uv run uvicorn duplex_server.broker:app --reload --port 8000
 
 ### The swap seam
 
-The broker reads the model id from `DUPLEX_MODEL` (default `gpt-live-1`). When our own
+The broker reads the model id from `DUPLEX_MODEL` (default `gpt-live-1.1`). When our own
 full-duplex model is ready, point `DUPLEX_MODEL` at it. This single seam is how we keep the
-GPT-Live-1 stand-in from leaking through the rest of the code, and it is one of the things a
+GPT-Live-1.1 stand-in from leaking through the rest of the code, and it is one of the things a
 real SDK would formalize.
 
 ---
@@ -193,7 +193,7 @@ Loaded by the broker from `.env.local` at the repo root (and the process env):
 | Variable | Side | Default | Purpose |
 |---|---|---|---|
 | `OPENAI_API_KEY` | broker | — (required) | Auth for the Live endpoint. Stays server-side. |
-| `DUPLEX_MODEL` | broker | `gpt-live-1` | The voice model id — the swap seam. |
+| `DUPLEX_MODEL` | broker | `gpt-live-1.1` | The voice model id — the swap seam. |
 | `DUPLEX_BRAIN_MODEL` | worker | `gpt-6-luna` | The backend "brain" LLM that picks tools. |
 | `DUPLEX_INSTRUCTIONS` | broker | friendly-assistant prompt | Default system prompt. |
 | `DUPLEX_ALLOWED_ORIGINS` | broker | `http://localhost:3000` | Comma-separated CORS allowlist. |

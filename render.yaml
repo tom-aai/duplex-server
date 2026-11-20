@@ -24,6 +24,6 @@ services:
         value: https://duplex-frontend.onrender.com
       # Optional overrides — uncomment to pin them:
       # - key: DUPLEX_MODEL
-      #   value: gpt-live-1
+      #   value: gpt-live-1.1
       # - key: DUPLEX_BRAIN_MODEL
       #   value: gpt-6-luna
